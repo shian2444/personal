@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('img/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .plane-animation {
+            position: absolute;
+            bottom: -100px; /* Start position off-screen at the bottom */
+            left: 10%; /* Start position horizontally */
+            width: 100px; /* Adjust size as needed */
+            animation: takeoff 10s linear forwards;
+            z-index: 2;
+        }
+
+        @keyframes takeoff {
+            0% {
+                bottom: -100px;
+                left: 10%;
+                transform: rotate(0deg);
+            }
+            50% {
+                bottom: 50%;
+                left: 50%;
+                transform: rotate(15deg); /* Slight rotation to simulate ascent */
+            }
+            100% {
+                bottom: 100%;
+                left: 90%;
+                transform: rotate(30deg); /* More rotation to complete takeoff */
+            }
+        }
+
+        .sidebar {
+            width: 220px;
+            background: url('img/chef.png') no-repeat center center;
+            background-size: cover;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: -220px;
+            transition: left 0.3s ease;
+            padding: 50px 15px 20px 15px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1;
+            color: black;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            display: block;
+            color: black;
+            text-decoration: none;
+            padding: 12px 0;
+            font-size: 18px;
+            font-weight: bold;
+            background: none;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            color: #00796b;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            z-index: 2;
+        }
+
+        .toggle-btn:hover {
+            color: #004d40;
+        }
+
+        .content {
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+        }
+
+        .content.adjusted {
+            margin-left: 220px; /* Same width as the sidebar */
+        }
+
+        header {
+            text-align: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .welcome-text {
+            text-align: left;
+        }
+
+        .welcome-text h1 {
+            margin: 0;
+        }
+
+        .slogan {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00796b;
+            margin-top: 10px;
+            font-family: 'Comic Sans MS', sans-serif; /* Example of a fancy but readable font */
+        }
+
+        .album {
+            margin-top: 0.1 in; /* Positioned 0.5 inch below the name and slogan */
+            overflow: auto;
+            width: 90%; /* Adjust width as needed */
+            height: 500px; /* Adjust height as needed */
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .album-container {
+            display: flex;
+            flex-wrap: nowrap;
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+        }
+
+        .album-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            scroll-snap-align: start;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .album-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .album-item img:hover {
+            transform: scale(1.1);
+        }
+
+        .tab-button {
+            padding: 8px;
+            text-align: center;
+            background-color: rgba(224, 242, 241, 0.8);
+            color: #00796b;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .tab-button.active {
+            background-color: #b2dfdb;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content h2 {
+            font-size: 24px;
+            color: black;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .tab-content p, .tab-content label {
+            font-size: 18px;
+            color: black;
+        }
+
+        .certificate-item {
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .certificate-item div {
+            width: 45%;
+            max-width: 300px;
+            margin: 10px;
+        }
+
+        .certificate-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .certificate-item p {
+            font-size: 18px;
+            color: black;
+            margin-top: 10px;
+        }
+
+        .about-me {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="plane-animation">
+        <img src="img/plane.png" alt="Plane Animation">
+    </div>
+
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <a href="#home" onclick="showTab('home')">Home</a>
+        <a href="#certificates" onclick="showTab('certificates')">Certificates</a>
+        <a href="#about" onclick="showTab('about')">About Me</a>
+        <a href="#contact" onclick="showTab('contact')">Contact</a>
+    </div>
+
+    <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
+
+    <div class="content">
+        <header>
+            <div class="welcome-section">
+                <img src="img/shian.jpg" alt="Shian Andry J. Martinez" class="profile-img">
+                <div class="welcome-text">
+                    <h1>Shian Andry J. Martinez</h1>
+                    <p class="slogan">Where Hospitality Meets Excellence</p>
+                </div>
+            </div>
+        </header>
+
+        <div id="home" class="tab-content active">
+            <div class="album">
+                <div class="album-container">
+                    <!-- Container for 5x5 images -->
+                    <div class="album-item">
+                        <img src="img/12.jpeg" alt="Photo 1">
+                        <img src="img/ae.jpg" alt="Photo 2">
+                        <img src="img/aq.jpeg" alt="Photo 3">
+                        <img src="img/ar.jpeg" alt="Photo 4">
+                        <img src="img/aw.jpeg" alt="Photo 5">
+                        <img src="img/basic.jpeg" alt="Photo 6">
+                        <img src="img/bp.jpeg" alt="Photo 7">
+                        <img src="img/butchery.jpeg" alt="Photo 8">
+                        <img src="img/chick.jpg" alt="Photo 9">
+                        <img src="img/lechon.jpeg" alt="Photo 10">
+                        <img src="img/pig.jpg" alt="Photo 11">
+                        <img src="img/salad.jpg" alt="Photo 12">
+                        <img src="img/salad2.jpg" alt="Photo 13">
+                        <img src="img/sand.jpeg" alt="Photo 14">
+                        <img src="img/sweetsour.jpg" alt="Photo 15">
+                        <img src="img/ski.jpeg" alt="Photo 16">
+                        <img src="img/class.jpeg" alt="Photo 17">
+                        <img src="img/re.jpeg" alt="Photo 18">
+                        <img src="img/class2.jpeg" alt="Photo 19">
+                        <img src="img/shian.jpg" alt="Photo 20">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="certificates" class="tab-content">
+            <h2>Certificates</h2>
+            <div class="certificate-item">
+                <div>
+                    <img src="img/fbs.jpg" alt="NC2 Certificate">
+                    <p>NC2 Certificate in FoodBev Service</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="about" class="tab-content">
+            <h2>About Me</h2>
+            <div class="about-me">
+                <p>Hello! My name is Shian Andry J. Martinez.</p>
+    <p>I am a dedicated student currently pursuing a Bachelor of Science in Hospitality Management. My journey in the hospitality industry is driven by a profound passion for creating memorable experiences and delivering exceptional service.</p>
+    <p>With a strong academic background, I have honed my skills and knowledge to excel in various aspects of hospitality management. My coursework and practical experiences have equipped me with a deep understanding of the industry's dynamics, from front office operations to event planning and food and beverage management.</p>
+    <p>I am committed to achieving excellence in everything I do. Whether it's ensuring a guest's stay is comfortable and enjoyable or organizing seamless events, I strive to exceed expectations and leave a lasting positive impression. My love for the hospitality industry fuels my dedication to continuous learning and professional growth.</p>
+    <p>I believe that every interaction is an opportunity to make a difference, and I am excited to bring my enthusiasm and expertise to the world of hospitality. Thank you for visiting my website, and I look forward to connecting with you!</p>            </div>
+        </div>
+
+
+	 <div id="contact" class="tab-content">
+            <h2>Contact</h2>
+            <p>Email: shianandry1@gmail.com</p>
+            <p>Phone: 09458308849</p>
+	    <p>Current Address: San Pablo, San Esteban, Ilocos Sur</p>
+	    <p>Home Address: Longboy, Suyo Proper, Suyo, Ilocos Sur</p>
+
+            <a href="https://web.facebook.com/the.ardashian/" target="_blank" class="contact-button">Visit my Facebook</a>
+        </div>
+	   
+       
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.content').classList.toggle('adjusted');
+        }
+
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                if (tab.id === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
